@@ -1,17 +1,12 @@
 package org.IC.mcpServer.Core;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.IC.mcpServer.HTTP.Tools.LocalLLMTool;
-import org.IC.mcpServer.HTTP.Tools.Tool;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 @ApplicationScoped
 public class JsonRpcHandler {

@@ -1,4 +1,4 @@
-package org.IC.mcpServer;
+package org.IC.mcpServer.STDIO;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
