@@ -1,4 +1,4 @@
-package org.IC.mcpServer.Client;
+package org.IC.mcpServer.STDIO.Client;
 
 import java.io.*;
 

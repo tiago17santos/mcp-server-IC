@@ -1,6 +1,6 @@
-package org.IC.mcpServer.Tools;
+package org.IC.mcpServer.STDIO.Tools;
 
-public class MathTools implements Tool {
+public class MathTools implements Tools {
 
     @Override
     public Object execute(String methodName, Object[] args) {

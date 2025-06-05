@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.inject.Inject;
-import org.IC.mcpServer.Tools.MathTools;
-import org.IC.mcpServer.Tools.Tool;
+import org.IC.mcpServer.STDIO.Tools.MathTools;
+import org.IC.mcpServer.STDIO.Tools.Tools;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import java.io.BufferedReader;
@@ -20,7 +20,7 @@ public class MCPServer implements Callable<Integer> {
     @Inject
     ObjectMapper objectMapper;
 
-    Map<String, Tool> tools = new HashMap<>();
+    Map<String, Tools> tools = new HashMap<>();
 
     public MCPServer() {
         tools.put("math", new MathTools());
@@ -47,14 +47,14 @@ public class MCPServer implements Callable<Integer> {
                 String toolName = parts[0];
                 String methodName = parts[1];
 
-                Tool tool = tools.get(toolName);
-                if (tool == null) {
+                Tools tools = this.tools.get(toolName);
+                if (tools == null) {
                     throw new IllegalArgumentException("Ferramenta desconhecida: " + toolName);
                 }
 
                 JsonNode params = input.get("params");
                 Object[] args = objectMapper.convertValue(params, Object[].class);
-                Object result = tool.execute(methodName, args);
+                Object result = tools.execute(methodName, args);
 
                 ObjectNode responseNode = objectMapper.createObjectNode();
                 responseNode.put("jsonrpc", "2.0");
