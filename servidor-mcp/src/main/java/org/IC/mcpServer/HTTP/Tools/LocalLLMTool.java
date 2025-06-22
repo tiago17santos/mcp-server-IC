@@ -10,7 +10,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-@ApplicationScoped
 public class LocalLLMTool {
 
     private static final String OLLAMA_URL = "http://localhost:11434/api/generate";

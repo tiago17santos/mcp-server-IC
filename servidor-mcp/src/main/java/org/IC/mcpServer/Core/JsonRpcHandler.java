@@ -8,6 +8,9 @@ import jakarta.inject.Inject;
 import org.IC.mcpServer.HTTP.Tools.Tool;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -23,13 +26,17 @@ public class JsonRpcHandler {
 
     @Inject
     public JsonRpcHandler() {
-        Reflections reflections = new Reflections("org.IC.mcpServer.HTTP.Tools", Scanners.MethodsAnnotated);
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+                .setUrls(ClasspathHelper.forPackage("org.IC.mcpServer.HTTP.Tools"))
+                .filterInputsBy(new FilterBuilder().includePackage("org.IC.mcpServer.HTTP.Tools"))
+                .setScanners(Scanners.MethodsAnnotated)
+        );
 
         Set<Method> annotatedMethods = reflections.get(Scanners.MethodsAnnotated.with(Tool.class).as(Method.class));
 
         for (Method method : annotatedMethods) {
             Tool tool = method.getAnnotation(Tool.class);
-            String name = tool.value();
+            String name = tool.value().trim();
             try {
                 Object instance = method.getDeclaringClass().getDeclaredConstructor().newInstance();
                 methods.put(name, method);
@@ -63,7 +70,9 @@ public class JsonRpcHandler {
         } catch (Exception e) {
             ObjectNode error = mapper.createObjectNode();
             error.put("jsonrpc", "2.0");
-            error.putObject("error").put("code", -32603).put("message", e.getMessage());
+            error.putObject("error").put("code", -32603)
+                    .put("message", e.getClass().getSimpleName() + ": " +
+                            (e.getMessage() != null ? e.getMessage() : "Erro sem mensagem"));
             return error.toString();
         }
     }
